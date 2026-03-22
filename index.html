@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 Tournament Match Maker</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #38bdf8;
+}
+
+.container {
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 500px;
+  margin: auto;
+}
+
+input, select {
+  width: 90%;
+  padding: 12px;
+  margin: 6px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 12px 18px;
+  margin: 8px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(45deg, #22c55e, #4ade80);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.match-box {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  background: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.team {
+  width: 40%;
+  text-align: center;
+}
+
+.team img {
+  width: 50px;
+  height: 50px;
+}
+
+.vs {
+  font-weight: bold;
+  color: yellow;
+}
+
+.club {
+  font-size: 12px;
+  color: #94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<h1>⚽ Tournament Match Maker</h1>
+
+<div class="container">
+
+<input type="text" id="playerName" placeholder="Player Name">
+
+<select id="clubSelect">
+<option value="">Select Club</option>
+
+<option value="Arsenal|https://1000logos.net/wp-content/uploads/2018/02/Arsenal-logo.png">Arsenal</option>
+<option value="Chelsea|https://1000logos.net/wp-content/uploads/2018/06/Chelsea-logo.png">Chelsea</option>
+<option value="Manchester United|https://1000logos.net/wp-content/uploads/2017/03/Manchester-United-logo.png">Manchester United</option>
+<option value="Manchester City|https://1000logos.net/wp-content/uploads/2017/03/Manchester-City-logo.png">Manchester City</option>
+<option value="Liverpool|https://1000logos.net/wp-content/uploads/2017/03/Liverpool-logo.png">Liverpool</option>
+<option value="Tottenham|https://1000logos.net/wp-content/uploads/2018/06/Tottenham-logo.png">Tottenham</option>
+<option value="Newcastle|https://1000logos.net/wp-content/uploads/2018/06/Newcastle-logo.png">Newcastle</option>
+<option value="Aston Villa|https://1000logos.net/wp-content/uploads/2018/06/Aston-Villa-logo.png">Aston Villa</option>
+
+<option value="Barcelona|https://1000logos.net/wp-content/uploads/2016/10/Barcelona-logo.png">Barcelona</option>
+<option value="Real Madrid|https://1000logos.net/wp-content/uploads/2016/10/Real-Madrid-logo.png">Real Madrid</option>
+<option value="Atletico Madrid|https://1000logos.net/wp-content/uploads/2016/10/Atletico-Madrid-logo.png">Atletico Madrid</option>
+<option value="Sevilla|https://1000logos.net/wp-content/uploads/2018/06/Sevilla-logo.png">Sevilla</option>
+
+<option value="Bayern Munich|https://1000logos.net/wp-content/uploads/2017/03/Bayern-Munich-Logo.png">Bayern Munich</option>
+<option value="Dortmund|https://1000logos.net/wp-content/uploads/2018/06/Borussia-Dortmund-logo.png">Dortmund</option>
+<option value="RB Leipzig|https://1000logos.net/wp-content/uploads/2018/06/RB-Leipzig-logo.png">RB Leipzig</option>
+
+<option value="Juventus|https://1000logos.net/wp-content/uploads/2017/03/Juventus-Logo.png">Juventus</option>
+<option value="AC Milan|https://1000logos.net/wp-content/uploads/2018/06/AC-Milan-logo.png">AC Milan</option>
+<option value="Inter Milan|https://1000logos.net/wp-content/uploads/2018/06/Inter-Milan-logo.png">Inter Milan</option>
+<option value="Napoli|https://1000logos.net/wp-content/uploads/2018/06/Napoli-logo.png">Napoli</option>
+<option value="Roma|https://1000logos.net/wp-content/uploads/2018/06/AS-Roma-logo.png">Roma</option>
+
+<option value="PSG|https://1000logos.net/wp-content/uploads/2016/10/PSG-logo.png">PSG</option>
+<option value="Marseille|https://1000logos.net/wp-content/uploads/2018/06/Marseille-logo.png">Marseille</option>
+<option value="Lyon|https://1000logos.net/wp-content/uploads/2018/06/Lyon-logo.png">Lyon</option>
+
+<option value="Ajax|https://1000logos.net/wp-content/uploads/2018/06/Ajax-logo.png">Ajax</option>
+<option value="Benfica|https://1000logos.net/wp-content/uploads/2018/06/Benfica-logo.png">Benfica</option>
+<option value="Porto|https://1000logos.net/wp-content/uploads/2018/06/Porto-logo.png">Porto</option>
+<option value="Celtic|https://1000logos.net/wp-content/uploads/2018/06/Celtic-logo.png">Celtic</option>
+<option value="Rangers|https://1000logos.net/wp-content/uploads/2018/06/Rangers-logo.png">Rangers</option>
+
+<option value="Al Nassr|https://1000logos.net/wp-content/uploads/2023/02/Al-Nassr-logo.png">Al Nassr</option>
+<option value="Al Hilal|https://1000logos.net/wp-content/uploads/2023/02/Al-Hilal-logo.png">Al Hilal</option>
+<option value="Inter Miami|https://1000logos.net/wp-content/uploads/2020/06/Inter-Miami-logo.png">Inter Miami</option>
+
+</select>
+
+<br>
+
+<button onclick="addPlayer()">➕ Register</button>
+<button onclick="generateMatches()">🎯 Generate Matches</button>
+<button onclick="clearAll()">🗑 Clear All</button>
+
+<div id="matches"></div>
+
+</div>
+
+<script>
+let players = JSON.parse(localStorage.getItem("players")) || [];
+
+function savePlayers() {
+  localStorage.setItem("players", JSON.stringify(players));
+}
+
+function addPlayer() {
+  let name = document.getElementById("playerName").value;
+  let clubData = document.getElementById("clubSelect").value;
+
+  if (!name || !clubData) {
+    alert("Enter name and select club");
+    return;
+  }
+
+  let [club, logo] = clubData.split("|");
+
+  players.push({ name, club, logo });
+  savePlayers();
+
+  document.getElementById("playerName").value = "";
+  document.getElementById("clubSelect").value = "";
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function generateMatches() {
+  let shuffled = [...players];
+  shuffle(shuffled);
+
+  let output = "";
+
+  for (let i = 0; i < shuffled.length; i += 2) {
+    if (shuffled[i + 1]) {
+      output += `
+      <div class="match-box">
+        <div class="team">
+          <img src="${shuffled[i].logo}">
+          <div>${shuffled[i].name}</div>
+          <div class="club">${shuffled[i].club}</div>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <div class="team">
+          <img src="${shuffled[i+1].logo}">
+          <div>${shuffled[i+1].name}</div>
+          <div class="club">${shuffled[i+1].club}</div>
+        </div>
+      </div>
+      `;
+    } else {
+      output += `
+      <div class="match-box">
+        <div class="team">
+          <img src="${shuffled[i].logo}">
+          <div>${shuffled[i].name}</div>
+          <div class="club">${shuffled[i].club}</div>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <div class="team">X</div>
+      </div>
+      `;
+    }
+  }
+
+  document.getElementById("matches").innerHTML = output;
+}
+
+function clearAll() {
+  players = [];
+  localStorage.removeItem("players");
+  document.getElementById("matches").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
