@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 Tournament Match Maker</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #38bdf8;
+}
+
+.container {
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 500px;
+  margin: auto;
+}
+
+input, select {
+  width: 90%;
+  padding: 12px;
+  margin: 6px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 12px 18px;
+  margin: 8px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(45deg, #22c55e, #4ade80);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.match-box {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  background: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.team {
+  width: 40%;
+  text-align: center;
+}
+
+.team img {
+  width: 50px;
+  height: 50px;
+}
+
+.vs {
+  font-weight: bold;
+  color: yellow;
+}
+
+.club {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.match-time {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #facc15;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>⚽ Match Maker</h1>
+
+<div class="container">
+
+<input type="text" id="playerName" placeholder="Player Name">
+
+<select id="clubSelect">
+<option value="">Select Club</option>
+<option value="Arsenal|https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg">Arsenal</option>
+<option value="Chelsea|https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg">Chelsea</option>
+<option value="Man United|https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg">Manchester United</option>
+<option value="Man City|https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg">Manchester City</option>
+<option value="Liverpool|https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg">Liverpool</option>
+<option value="Barcelona|https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg">Barcelona</option>
+<option value="Real Madrid|https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg">Real Madrid</option>
+<option value="PSG|https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg">PSG</option>
+<option value="Juventus|https://upload.wikimedia.org/wikipedia/commons/1/15/Juventus_FC_2017_logo.svg">Juventus</option>
+<option value="Bayern|https://upload.wikimedia.org/wikipedia/en/1/1f/FC_Bayern_München_logo_%282017%29.svg">Bayern Munich</option>
+<option value="Dortmund|https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg">Dortmund</option>
+<option value="AC Milan|https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg">AC Milan</option>
+<option value="Inter Milan|https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg">Inter Milan</option>
+<option value="Napoli|https://upload.wikimedia.org/wikipedia/commons/2/2d/SSC_Napoli.svg">Napoli</option>
+<option value="Ajax|https://upload.wikimedia.org/wikipedia/en/7/79/Ajax_Amsterdam.svg">Ajax</option>
+</select>
+
+<!-- Manual Match Time Input -->
+<input type="text" id="matchTimeInput" placeholder="Enter Match Time e.g. 12:00">
+
+<br>
+
+<button onclick="addPlayer()">➕ Register</button>
+<button onclick="generateMatches()">🎯 Generate</button>
+<button onclick="clearAll()">🗑 Clear</button>
+
+<div id="matches"></div>
+
+</div>
+
+<script>
+let players = JSON.parse(localStorage.getItem("players")) || [];
+
+function savePlayers() {
+  localStorage.setItem("players", JSON.stringify(players));
+}
+
+function addPlayer() {
+  let name = document.getElementById("playerName").value.trim();
+  let clubData = document.getElementById("clubSelect").value;
+
+  if(!name || !clubData){
+    alert("Enter name and select club");
+    return;
+  }
+
+  let [club, logo] = clubData.split("|");
+
+  players.push({name, club, logo});
+  savePlayers();
+
+  document.getElementById("playerName").value = "";
+  document.getElementById("clubSelect").value = "";
+}
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+}
+
+function generateMatches(){
+  if(players.length === 0){ alert("No players registered"); return; }
+
+  let matchTime = document.getElementById("matchTimeInput").value.trim();
+  if(!matchTime){ alert("Enter match time!"); return; }
+
+  let shuffled = [...players];
+  shuffle(shuffled);
+  let output = "";
+
+  for(let i=0;i<shuffled.length;i+=2){
+    if(shuffled[i+1]){
+      output += `
+      <div class="match-box">
+        <div class="match-time">${matchTime}</div>
+        <div class="team">
+          <img src="${shuffled[i].logo}">
+          <div>${shuffled[i].name}</div>
+          <div class="club">${shuffled[i].club}</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <img src="${shuffled[i+1].logo}">
+          <div>${shuffled[i+1].name}</div>
+          <div class="club">${shuffled[i+1].club}</div>
+        </div>
+      </div>`;
+    } else {
+      output += `
+      <div class="match-box">
+        <div class="match-time">${matchTime}</div>
+        <div class="team">
+          <img src="${shuffled[i].logo}">
+          <div>${shuffled[i].name}</div>
+          <div class="club">${shuffled[i].club}</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">X</div>
+      </div>`;
+    }
+  }
+
+  document.getElementById("matches").innerHTML = output;
+}
+
+function clearAll(){
+  if(!confirm("Clear all registered players?")) return;
+  players = [];
+  localStorage.removeItem("players");
+  document.getElementById("matches").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
